@@ -1,0 +1,39 @@
+<Window x:Class="MDReader.Installer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Installa MDReader" Height="290" Width="540"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        FontFamily="Segoe UI" FontSize="14">
+  <Grid Margin="20">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Text="Cartella di destinazione:" Margin="0,0,0,6"/>
+    <DockPanel Grid.Row="1" Margin="0,0,0,16">
+      <Button x:Name="btnSfoglia" Content="Sfoglia…" Width="80" DockPanel.Dock="Right" Padding="4,2" Click="btnSfoglia_Click"/>
+      <TextBox x:Name="txtPath" Padding="6,4"/>
+    </DockPanel>
+
+    <CheckBox x:Name="chkAssocia" Grid.Row="2"
+              Content="Registra MDReader come predefinito per file .md / .markdown"
+              IsChecked="True" Margin="0,0,0,6"/>
+    <TextBlock x:Name="txtSource" Grid.Row="3"
+               FontSize="11" Foreground="Gray"
+               Margin="0,0,0,20"/>
+
+    <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button x:Name="btnDisinstalla" Content="Disinstalla" Width="100" Height="32"
+              Margin="0,0,10,0" Click="btnDisinstalla_Click"/>
+      <Button x:Name="btnInstalla" Content="Installa" Width="100" Height="32"
+              Margin="0,0,10,0" IsDefault="True" Click="btnInstalla_Click"/>
+      <Button x:Name="btnEsci" Content="Esci" Width="80" Height="32"
+              IsCancel="True" Click="btnEsci_Click"/>
+    </StackPanel>
+  </Grid>
+</Window>

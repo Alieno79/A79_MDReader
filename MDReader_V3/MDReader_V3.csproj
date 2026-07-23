@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>File_MD.ico</ApplicationIcon>
+    <AssemblyName>MDReader</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.40.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3065.39" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="File_MD.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Guida.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
