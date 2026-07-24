@@ -591,13 +591,13 @@ public partial class MainWindow : Window
         var mediumBg = new SolidColorBrush(Color.FromRgb(45, 45, 45));
         var btnBrush = _darkMode ? darkText : Brushes.Black;
 
-        toolbarTray.Background = _darkMode ? darkBg : SystemColors.MenuBarBrush;
-        formattingTray.Background = _darkMode ? darkBg : SystemColors.MenuBarBrush;
+        toolbarTray.Background = _darkMode ? mediumBg : SystemColors.MenuBarBrush;
+        formattingTray.Background = _darkMode ? mediumBg : SystemColors.MenuBarBrush;
         var borderBrush = _darkMode ? mediumBg : new SolidColorBrush(Color.FromRgb(204, 204, 204));
-        borderToolbar.BorderBrush = borderBrush;
-        borderToolbar.Background = _darkMode ? darkBg : SystemColors.MenuBarBrush;
-        borderFormatting.BorderBrush = borderBrush;
-        borderFormatting.Background = _darkMode ? darkBg : SystemColors.MenuBarBrush;
+        var headerBorderBrush = _darkMode ? new SolidColorBrush(Color.FromRgb(80, 80, 80)) : new SolidColorBrush(Color.FromRgb(204, 204, 204));
+        var splitterBorderBrush = _darkMode ? new SolidColorBrush(Color.FromRgb(60, 60, 60)) : new SolidColorBrush(Color.FromRgb(204, 204, 204));
+        borderToolbar.Background = _darkMode ? mediumBg : SystemColors.MenuBarBrush;
+        borderFormatting.Background = _darkMode ? mediumBg : SystemColors.MenuBarBrush;
         borderStatus.BorderBrush = borderBrush;
 
         foreach (var tray in new[] { toolbarTray, formattingTray })
@@ -629,25 +629,32 @@ public partial class MainWindow : Window
 
         borderEditor.Background = _darkMode ? mediumBg : lightBg;
         lblEditor.Foreground = _darkMode ? darkText : Brushes.Black;
+        borderEditor.BorderBrush = headerBorderBrush;
 
         borderPreview.Background = _darkMode ? mediumBg : lightBg;
         lblPreview.Foreground = _darkMode ? darkText : Brushes.Black;
+        borderPreview.BorderBrush = headerBorderBrush;
         txtEditor.Background = _darkMode ? darkBg : Brushes.White;
         txtEditor.Foreground = _darkMode ? darkText : Brushes.Black;
         txtSearch.Background = _darkMode ? new SolidColorBrush(Color.FromRgb(60, 60, 60)) : Brushes.White;
         txtSearch.Foreground = _darkMode ? darkText : Brushes.Black;
 
         tocSplitter.Background = _darkMode ? mediumBg : new SolidColorBrush(Color.FromRgb(224, 224, 224));
+        tocSplitter.BorderBrush = splitterBorderBrush;
+        tocSplitter.BorderThickness = new Thickness(1, 0, 1, 0);
         editorSplitter.Background = _darkMode ? mediumBg : new SolidColorBrush(Color.FromRgb(224, 224, 224));
+        editorSplitter.BorderBrush = splitterBorderBrush;
+        editorSplitter.BorderThickness = new Thickness(1, 0, 1, 0);
 
+        editorPanel.Background = _darkMode ? darkBg : Brushes.White;
         contentGrid.Background = _darkMode ? darkBg : Brushes.White;
         emptyState.Background = _darkMode ? darkBg : Brushes.White;
         emptyText.Foreground = _darkMode ? darkText : new SolidColorBrush(Color.FromRgb(136, 136, 136));
 
         tocPanel.Background = _darkMode ? darkBg : Brushes.White;
         borderTocHeader.Background = _darkMode ? mediumBg : lightBg;
-        borderTocHeader.BorderBrush = _darkMode ? mediumBg : new SolidColorBrush(Color.FromRgb(204, 204, 204));
         lblToc.Foreground = _darkMode ? darkText : Brushes.Black;
+        borderTocHeader.BorderBrush = headerBorderBrush;
         tocList.Background = _darkMode ? darkBg : Brushes.White;
         tocList.Foreground = _darkMode ? darkText : Brushes.Black;
     }
@@ -1477,7 +1484,7 @@ public partial class MainWindow : Window
             editorSplitter.Visibility = Visibility.Visible;
             editorSplitter.Width = 4;
             editorSplitter.Height = double.NaN;
-            editorSplitter.HorizontalAlignment = HorizontalAlignment.Center;
+            editorSplitter.HorizontalAlignment = HorizontalAlignment.Stretch;
             editorSplitter.VerticalAlignment = VerticalAlignment.Stretch;
             editorSplitter.ResizeBehavior = GridResizeBehavior.PreviousAndNext;
         }

@@ -6,270 +6,316 @@
         Title="MDReader" Icon="File_MD.ico" Height="720" Width="1200" MinHeight="400" MinWidth="800"
          WindowStartupLocation="CenterScreen" PreviewKeyDown="Window_PreviewKeyDown" Closing="Window_Closing"
           AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop" DragLeave="Window_DragLeave">
-  <Window.Resources>
-    <local:LevelToMarginConverter x:Key="LevelToMarginConverter"/>
-  </Window.Resources>
-  <Grid x:Name="rootGrid">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
+	<Window.Resources>
+		<local:LevelToMarginConverter x:Key="LevelToMarginConverter"/>
+	</Window.Resources>
+	<Grid x:Name="rootGrid">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-    <Border x:Name="borderToolbar" Grid.Row="0" BorderBrush="#ccc" BorderThickness="0,0,0,1">
-      <ToolBarTray x:Name="toolbarTray" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
-        <ToolBar>
-          <ToolBar.Resources>
-            <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-              <Setter Property="Margin" Value="4,0"/>
-            </Style>
-          </ToolBar.Resources>
-          <Button x:Name="btnOpen" Click="BtnOpen_Click" ToolTip="Apri file Markdown (Ctrl+O)">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Apri"/>
-            </StackPanel>
-          </Button>
-          <Button x:Name="btnNew" Click="BtnNew_Click" ToolTip="Nuovo file (Ctrl+N)">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Nuovo"/>
-            </StackPanel>
-          </Button>
-          <Button x:Name="btnGuide" Click="BtnGuide_Click" ToolTip="Guida rapida">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE11B;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Guida"/>
-            </StackPanel>
-          </Button>
-          <Separator/>
-          <Button x:Name="btnSave" Click="BtnSave_Click" ToolTip="Salva (Ctrl+S)">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Salva"/>
-            </StackPanel>
-          </Button>
-          <Button x:Name="btnSaveAs" Click="BtnSaveAs_Click" ToolTip="Salva con nome (Ctrl+Maiusc+S)">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE792;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Salva come"/>
-            </StackPanel>
-          </Button>
-          <Button x:Name="btnPrint" Click="BtnPrint_Click" ToolTip="Stampa anteprima">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Stampa"/>
-            </StackPanel>
-          </Button>
-          <Separator/>
-          <ToggleButton x:Name="btnToggleEditor" IsChecked="False" Click="BtnToggleEditor_Click" ToolTip="Abilita/disabilita editor">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock Text="Editor"/>
-            </StackPanel>
-          </ToggleButton>
-          <Button x:Name="btnToggleLayout" Click="BtnToggleLayout_Click" ToolTip="Cambia layout editor" Width="32">
-            <TextBlock x:Name="lblLayout" Text="&#x2194;" FontSize="14"/>
-          </Button>
-          <Separator/>
-          <Label Padding="2,0" Margin="0,0,4,0" VerticalAlignment="Center">Cerca</Label>
-          <TextBox x:Name="txtSearch" Width="120" ToolTip="Testo da cercare (Invio, F3 successivo)" KeyDown="TxtSearch_KeyDown"/>
-          <Button x:Name="btnPrevMatch" Width="28" Click="BtnPrevMatch_Click" ToolTip="Precedente (Maiusc+F3)" IsEnabled="False">&#x25B2;</Button>
-          <Button x:Name="btnNextMatch" Width="28" Click="BtnNextMatch_Click" ToolTip="Successivo (F3)" IsEnabled="False">&#x25BC;</Button>
-          <Label x:Name="lblMatchCount" Content="0/0" Margin="4,0" Padding="0" VerticalAlignment="Center" FontWeight="SemiBold"/>
-          <Separator/>
-          <ToggleButton x:Name="btnDarkMode" Width="80" Click="BtnDarkMode_Click" ToolTip="Modalità scura">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="&#xE708;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
-              <TextBlock x:Name="lblDarkMode" Text="Scuro"/>
-            </StackPanel>
-          </ToggleButton>
-          <Separator/>
-          <Button x:Name="btnZoomOut" Width="28" Click="BtnZoomOut_Click" ToolTip="Zoom indietro">&#x2212;</Button>
-          <Label x:Name="lblZoom" Content="100%" Padding="2,0" VerticalAlignment="Center" MinWidth="36" HorizontalContentAlignment="Center"/>
-          <Button x:Name="btnZoomIn" Width="28" Click="BtnZoomIn_Click" ToolTip="Zoom avanti">+</Button>
-          <Button x:Name="btnZoomReset" Width="32" Click="BtnZoomReset_Click" ToolTip="Ripristina zoom (100%)">1:1</Button>
-        </ToolBar>
-      </ToolBarTray>
-    </Border>
+		<Border x:Name="borderToolbar" Grid.Row="0">
+			<ToolBarTray x:Name="toolbarTray" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
+				<ToolBar>
+					<ToolBar.Resources>
+						<Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+							<Setter Property="Margin" Value="6,0"/>
+						</Style>
+					</ToolBar.Resources>
+					<Button x:Name="btnOpen" Click="BtnOpen_Click" ToolTip="Apri file Markdown (Ctrl+O)">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Apri"/>
+						</StackPanel>
+					</Button>
+					<Button x:Name="btnNew" Click="BtnNew_Click" ToolTip="Nuovo file (Ctrl+N)">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Nuovo"/>
+						</StackPanel>
+					</Button>
+					<Button x:Name="btnGuide" Click="BtnGuide_Click" ToolTip="Guida rapida">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE11B;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Guida"/>
+						</StackPanel>
+					</Button>
+					<Separator/>
+					<Button x:Name="btnSave" Click="BtnSave_Click" ToolTip="Salva (Ctrl+S)">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Salva"/>
+						</StackPanel>
+					</Button>
+					<Button x:Name="btnSaveAs" Click="BtnSaveAs_Click" ToolTip="Salva con nome (Ctrl+Maiusc+S)">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE792;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Salva come"/>
+						</StackPanel>
+					</Button>
+					<Button x:Name="btnPrint" Click="BtnPrint_Click" ToolTip="Stampa anteprima">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Stampa"/>
+						</StackPanel>
+					</Button>
+					<Separator/>
+					<ToggleButton x:Name="btnToggleEditor" IsChecked="False" Click="BtnToggleEditor_Click" ToolTip="Abilita/disabilita editor">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock Text="Editor"/>
+						</StackPanel>
+					</ToggleButton>
+					<Button x:Name="btnToggleLayout" Click="BtnToggleLayout_Click" ToolTip="Cambia layout editor" Width="32">
+						<TextBlock x:Name="lblLayout" Text="&#x2194;" FontSize="14"/>
+					</Button>
+					<Separator/>
+					<Label Padding="2,0" Margin="0,0,4,0" VerticalAlignment="Center">Cerca</Label>
+					<TextBox x:Name="txtSearch" Width="120" ToolTip="Testo da cercare (Invio, F3 successivo)" KeyDown="TxtSearch_KeyDown"/>
+					<Button x:Name="btnPrevMatch" Width="28" Click="BtnPrevMatch_Click" ToolTip="Precedente (Maiusc+F3)" IsEnabled="False">&#x25B2;</Button>
+					<Button x:Name="btnNextMatch" Width="28" Click="BtnNextMatch_Click" ToolTip="Successivo (F3)" IsEnabled="False">&#x25BC;</Button>
+					<Label x:Name="lblMatchCount" Content="0/0" Margin="4,0" Padding="0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+					<Separator/>
+					<ToggleButton x:Name="btnDarkMode" Width="80" Click="BtnDarkMode_Click" ToolTip="Modalità scura">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xE708;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,4,0"/>
+							<TextBlock x:Name="lblDarkMode" Text="Scuro"/>
+						</StackPanel>
+					</ToggleButton>
+					<Separator/>
+					<Button x:Name="btnZoomOut" Width="28" Click="BtnZoomOut_Click" ToolTip="Zoom indietro">&#x2212;</Button>
+					<Label x:Name="lblZoom" Content="100%" Padding="2,0" VerticalAlignment="Center" MinWidth="36" HorizontalContentAlignment="Center"/>
+					<Button x:Name="btnZoomIn" Width="28" Click="BtnZoomIn_Click" ToolTip="Zoom avanti">+</Button>
+					<Button x:Name="btnZoomReset" Width="32" Click="BtnZoomReset_Click" ToolTip="Ripristina zoom (100%)">1:1</Button>
+				</ToolBar>
+			</ToolBarTray>
+		</Border>
 
-    <Border x:Name="borderFormatting" Grid.Row="1" BorderBrush="#ccc" BorderThickness="0,0,0,1" Padding="0">
-      <ToolBarTray x:Name="formattingTray" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
-        <ToolBar>
-          <ToolBar.Resources>
-            <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-              <Setter Property="Margin" Value="2,0"/>
-            </Style>
-          </ToolBar.Resources>
-          <Button x:Name="btnBold" Click="BtnBold_Click" ToolTip="Grassetto (Ctrl+B)" Width="28" FontWeight="Bold">B</Button>
-          <Button x:Name="btnItalic" Click="BtnItalic_Click" ToolTip="Corsivo (Ctrl+I)" Width="28" FontStyle="Italic">I</Button>
-          <Button x:Name="btnUnderline" Click="BtnUnderline_Click" ToolTip="Sottolineato" Width="28">
-            <TextBlock Text="U" TextDecorations="Underline"/>
-          </Button>
-          <Button x:Name="btnStrikethrough" Click="BtnStrikethrough_Click" ToolTip="Barrato" Width="28">
-            <TextBlock Text="S" TextDecorations="Strikethrough"/>
-          </Button>
-          <Separator/>
-          <Button x:Name="btnH1" Click="BtnH1_Click" ToolTip="Heading 1" Width="32">H1</Button>
-          <Button x:Name="btnH2" Click="BtnH2_Click" ToolTip="Heading 2" Width="32">H2</Button>
-          <Button x:Name="btnH3" Click="BtnH3_Click" ToolTip="Heading 3" Width="32">H3</Button>
-          <Separator/>
-          <Button x:Name="btnUl" Click="BtnUl_Click" ToolTip="Elenco puntato" Width="28">&#x2022;</Button>
-          <Button x:Name="btnOl" Click="BtnOl_Click" ToolTip="Elenco numerato" Width="28">1.</Button>
-          <Button x:Name="btnBq" Click="BtnBq_Click" ToolTip="Citazione" Width="28">&gt;</Button>
-          <Separator/>
-          <Button x:Name="btnCode" Click="BtnCode_Click" ToolTip="Codice" Width="28">&lt;/&gt;</Button>
-          <Button x:Name="btnLink" Click="BtnLink_Click" ToolTip="Inserisci link" Width="28">&#x1F517;</Button>
-          <Button x:Name="btnImage" Click="BtnImage_Click" ToolTip="Inserisci immagine" Width="28">&#x1F5BC;</Button>
-          <Button x:Name="btnHr" Click="BtnHr_Click" ToolTip="Linea orizzontale" Width="28">---</Button>
-          <Separator/>
-          <Button x:Name="btnColor" Click="BtnColor_Click" ToolTip="Colore testo" Width="36">
-            <TextBlock Text="A" Foreground="Red" FontWeight="Bold" FontSize="14" TextDecorations="Underline"/>
-          </Button>
-          <Popup x:Name="colorPopup" PlacementTarget="{Binding ElementName=btnColor}" Placement="Bottom"
+		<Border x:Name="borderFormatting" Grid.Row="1">
+			<ToolBarTray x:Name="formattingTray" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
+				<ToolBar>
+					<ToolBar.Resources>
+						<Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+							<Setter Property="Margin" Value="6,0"/>
+						</Style>
+					</ToolBar.Resources>
+					<Button x:Name="btnBold" Click="BtnBold_Click" ToolTip="Grassetto (Ctrl+B)" Width="28" FontWeight="Bold">B</Button>
+					<Button x:Name="btnItalic" Click="BtnItalic_Click" ToolTip="Corsivo (Ctrl+I)" Width="28" FontStyle="Italic">I</Button>
+					<Button x:Name="btnUnderline" Click="BtnUnderline_Click" ToolTip="Sottolineato" Width="28">
+						<TextBlock Text="U" TextDecorations="Underline"/>
+					</Button>
+					<Button x:Name="btnStrikethrough" Click="BtnStrikethrough_Click" ToolTip="Barrato" Width="28">
+						<TextBlock Text="S" TextDecorations="Strikethrough"/>
+					</Button>
+					<Separator/>
+					<Button x:Name="btnH1" Click="BtnH1_Click" ToolTip="Heading 1" Width="32">H1</Button>
+					<Button x:Name="btnH2" Click="BtnH2_Click" ToolTip="Heading 2" Width="32">H2</Button>
+					<Button x:Name="btnH3" Click="BtnH3_Click" ToolTip="Heading 3" Width="32">H3</Button>
+					<Separator/>
+					<Button x:Name="btnUl" Click="BtnUl_Click" ToolTip="Elenco puntato" Width="28">&#x2022;</Button>
+					<Button x:Name="btnOl" Click="BtnOl_Click" ToolTip="Elenco numerato" Width="28">1.</Button>
+					<Button x:Name="btnBq" Click="BtnBq_Click" ToolTip="Citazione" Width="28">&gt;</Button>
+					<Separator/>
+					<Button x:Name="btnCode" Click="BtnCode_Click" ToolTip="Codice" Width="28">&lt;/&gt;</Button>
+					<Button x:Name="btnLink" Click="BtnLink_Click" ToolTip="Inserisci link" Width="28">&#x1F517;</Button>
+					<Button x:Name="btnImage" Click="BtnImage_Click" ToolTip="Inserisci immagine" Width="28">&#x1F5BC;</Button>
+					<Button x:Name="btnHr" Click="BtnHr_Click" ToolTip="Linea orizzontale" Width="28">---</Button>
+					<Separator/>
+					<Button x:Name="btnColor" Click="BtnColor_Click" ToolTip="Colore testo" Width="36">
+						<TextBlock Text="A" Foreground="#E74C3C" FontWeight="Bold" FontSize="14"/>
+					</Button>
+					<Popup x:Name="colorPopup" PlacementTarget="{Binding ElementName=btnColor}" Placement="Bottom"
                  StaysOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
-            <Border Background="White" BorderBrush="#ccc" BorderThickness="1" Padding="6" CornerRadius="4">
-              <StackPanel>
-                <WrapPanel MaxWidth="168">
-                  <Button Width="28" Height="28" Background="Red" Tag="Red" Click="ColorButton_Click" Margin="2" ToolTip="Rosso"/>
-                  <Button Width="28" Height="28" Background="Blue" Tag="Blue" Click="ColorButton_Click" Margin="2" ToolTip="Blu"/>
-                  <Button Width="28" Height="28" Background="Green" Tag="Green" Click="ColorButton_Click" Margin="2" ToolTip="Verde"/>
-                  <Button Width="28" Height="28" Background="Orange" Tag="Orange" Click="ColorButton_Click" Margin="2" ToolTip="Arancione"/>
-                  <Button Width="28" Height="28" Background="Purple" Tag="Purple" Click="ColorButton_Click" Margin="2" ToolTip="Porpora"/>
-                  <Button Width="28" Height="28" Background="Teal" Tag="Teal" Click="ColorButton_Click" Margin="2" ToolTip="Verde acqua"/>
-                  <Button Width="28" Height="28" Background="Brown" Tag="Brown" Click="ColorButton_Click" Margin="2" ToolTip="Marrone"/>
-                  <Button Width="28" Height="28" Background="Pink" Tag="Pink" Click="ColorButton_Click" Margin="2" ToolTip="Rosa"/>
-                  <Button Width="28" Height="28" Background="DarkRed" Tag="DarkRed" Click="ColorButton_Click" Margin="2" ToolTip="Rosso scuro"/>
-                  <Button Width="28" Height="28" Background="DarkBlue" Tag="DarkBlue" Click="ColorButton_Click" Margin="2" ToolTip="Blu scuro"/>
-                  <Button Width="28" Height="28" Background="DarkGreen" Tag="DarkGreen" Click="ColorButton_Click" Margin="2" ToolTip="Verde scuro"/>
-                  <Button Width="28" Height="28" Background="Gold" Tag="Gold" Click="ColorButton_Click" Margin="2" ToolTip="Oro"/>
-                  <Button Width="28" Height="28" Background="Tomato" Tag="Tomato" Click="ColorButton_Click" Margin="2" ToolTip="Pomodoro"/>
-                  <Button Width="28" Height="28" Background="SteelBlue" Tag="SteelBlue" Click="ColorButton_Click" Margin="2" ToolTip="Azzurro"/>
-                  <Button Width="28" Height="28" Background="Gray" Tag="Gray" Click="ColorButton_Click" Margin="2" ToolTip="Grigio"/>
-                  <Button Width="28" Height="28" Background="Black" Tag="Black" Click="ColorButton_Click" Margin="2" ToolTip="Nero"/>
-                </WrapPanel>
-              </StackPanel>
-            </Border>
-          </Popup>
-        </ToolBar>
-      </ToolBarTray>
-    </Border>
+						<Border Background="White" BorderBrush="#ccc" BorderThickness="1" Padding="6" CornerRadius="4">
+							<StackPanel>
+								<WrapPanel MaxWidth="168">
+									<Button Width="28" Height="28" Background="Red" Tag="Red" Click="ColorButton_Click" Margin="2" ToolTip="Rosso"/>
+									<Button Width="28" Height="28" Background="Blue" Tag="Blue" Click="ColorButton_Click" Margin="2" ToolTip="Blu"/>
+									<Button Width="28" Height="28" Background="Green" Tag="Green" Click="ColorButton_Click" Margin="2" ToolTip="Verde"/>
+									<Button Width="28" Height="28" Background="Orange" Tag="Orange" Click="ColorButton_Click" Margin="2" ToolTip="Arancione"/>
+									<Button Width="28" Height="28" Background="Purple" Tag="Purple" Click="ColorButton_Click" Margin="2" ToolTip="Porpora"/>
+									<Button Width="28" Height="28" Background="Teal" Tag="Teal" Click="ColorButton_Click" Margin="2" ToolTip="Verde acqua"/>
+									<Button Width="28" Height="28" Background="Brown" Tag="Brown" Click="ColorButton_Click" Margin="2" ToolTip="Marrone"/>
+									<Button Width="28" Height="28" Background="Pink" Tag="Pink" Click="ColorButton_Click" Margin="2" ToolTip="Rosa"/>
+									<Button Width="28" Height="28" Background="DarkRed" Tag="DarkRed" Click="ColorButton_Click" Margin="2" ToolTip="Rosso scuro"/>
+									<Button Width="28" Height="28" Background="DarkBlue" Tag="DarkBlue" Click="ColorButton_Click" Margin="2" ToolTip="Blu scuro"/>
+									<Button Width="28" Height="28" Background="DarkGreen" Tag="DarkGreen" Click="ColorButton_Click" Margin="2" ToolTip="Verde scuro"/>
+									<Button Width="28" Height="28" Background="Gold" Tag="Gold" Click="ColorButton_Click" Margin="2" ToolTip="Oro"/>
+									<Button Width="28" Height="28" Background="Tomato" Tag="Tomato" Click="ColorButton_Click" Margin="2" ToolTip="Pomodoro"/>
+									<Button Width="28" Height="28" Background="SteelBlue" Tag="SteelBlue" Click="ColorButton_Click" Margin="2" ToolTip="Azzurro"/>
+									<Button Width="28" Height="28" Background="Gray" Tag="Gray" Click="ColorButton_Click" Margin="2" ToolTip="Grigio"/>
+									<Button Width="28" Height="28" Background="Black" Tag="Black" Click="ColorButton_Click" Margin="2" ToolTip="Nero"/>
+								</WrapPanel>
+							</StackPanel>
+						</Border>
+					</Popup>
+				</ToolBar>
+			</ToolBarTray>
+		</Border>
 
-    <Grid Grid.Row="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="tocColumn" Width="260"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="tocColumn" Width="260"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-      <Grid x:Name="tocPanel" Grid.Column="0" MinWidth="150" Background="White">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border x:Name="borderTocHeader" Grid.Row="0" Padding="8,4" BorderThickness="0,1,0,0" Background="#f0f0f0" Height="28">
-          <TextBlock x:Name="lblToc" Text="Indice" FontWeight="SemiBold" FontSize="13"/>
-        </Border>
-        <ListBox x:Name="tocList" Grid.Row="1" BorderThickness="0" Background="Transparent"
+			<Grid x:Name="tocPanel" Grid.Column="0" MinWidth="150" Background="White" ClipToBounds="True">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Border x:Name="borderTocHeader" Grid.Row="0" Padding="8,6" Background="#f0f0f0" Height="32" BorderBrush="#ccc" BorderThickness="0,1,0,1">
+					<TextBlock x:Name="lblToc" Text="Indice" FontWeight="SemiBold" FontSize="13"/>
+				</Border>
+				<ListBox x:Name="tocList" Grid.Row="1" BorderThickness="0" Background="Transparent"
                  SelectionChanged="TocList_SelectionChanged">
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Text="{Binding Text}" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}}" FontSize="13"/>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-        <Border x:Name="tocDropOverlay" Grid.Row="1"
+					<ListBox.Template>
+						<ControlTemplate TargetType="ListBox">
+							<ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+								<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+							</ScrollViewer>
+						</ControlTemplate>
+					</ListBox.Template>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Text}" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}}" FontSize="13"/>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+				<Border x:Name="tocDropOverlay" Grid.Row="1"
                 Background="#CC00CC00" Visibility="Collapsed" IsHitTestVisible="False"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-          <Viewbox Width="56" Height="56">
-            <TextBlock Text="+" Foreground="White" FontSize="32" FontWeight="Bold"
+					<Viewbox Width="56" Height="56">
+						<TextBlock Text="+" Foreground="White" FontSize="32" FontWeight="Bold"
                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Viewbox>
-        </Border>
-      </Grid>
+					</Viewbox>
+				</Border>
+			</Grid>
 
-      <Border x:Name="printOverlay" Grid.ColumnSpan="3"
+			<Border x:Name="printOverlay" Grid.ColumnSpan="3"
               Background="#66000000" Visibility="Collapsed" IsHitTestVisible="False"
               MouseDown="PrintOverlay_MouseDown" Panel.ZIndex="5"/>
 
-      <GridSplitter x:Name="tocSplitter" Grid.Column="1" Width="4" HorizontalAlignment="Stretch"
-                    Background="#e0e0e0" ShowsPreview="True" ResizeBehavior="PreviousAndNext"/>
+			<GridSplitter x:Name="tocSplitter" Grid.Column="1" Width="4" HorizontalAlignment="Stretch"
+                    Background="#e0e0e0" ShowsPreview="True" ResizeBehavior="PreviousAndNext"
+                    BorderBrush="#ccc" BorderThickness="1,0,1,0"/>
 
-      <Grid x:Name="contentArea" Grid.Column="2" ClipToBounds="True">
-        <Grid x:Name="editorPanel" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Border x:Name="borderEditor" Grid.Row="0" Padding="8,4" Background="#f0f0f0" Height="28">
-            <TextBlock x:Name="lblEditor" Text="Editor" FontWeight="SemiBold" FontSize="13"/>
-          </Border>
-          <TextBox x:Name="txtEditor" Grid.Row="1"
+			<Grid x:Name="contentArea" Grid.Column="2" ClipToBounds="True">
+				<Grid x:Name="editorPanel" Visibility="Collapsed" Background="White" ClipToBounds="True">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Border x:Name="borderEditor" Grid.Row="0" Padding="8,6" Background="#f0f0f0" Height="32" BorderBrush="#ccc" BorderThickness="0,1,0,1">
+						<TextBlock x:Name="lblEditor" Text="Editor" FontWeight="SemiBold" FontSize="13"/>
+					</Border>
+					<TextBox x:Name="txtEditor" Grid.Row="1"
                    AcceptsReturn="True" AcceptsTab="True"
                    FontFamily="Consolas" FontSize="14"
                    Padding="8" BorderThickness="0"
                    VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                   TextChanged="TxtEditor_TextChanged" SelectionChanged="TxtEditor_SelectionChanged"/>
-        </Grid>
+                   TextChanged="TxtEditor_TextChanged" SelectionChanged="TxtEditor_SelectionChanged">
+						<TextBox.Template>
+							<ControlTemplate TargetType="TextBox">
+								<ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+							</ControlTemplate>
+						</TextBox.Template>
+					</TextBox>
+				</Grid>
 
-        <GridSplitter x:Name="editorSplitter" Visibility="Collapsed"
-                      Background="#e0e0e0" ShowsPreview="True" ResizeBehavior="PreviousAndNext"/>
+				<GridSplitter x:Name="editorSplitter" Visibility="Collapsed"
+                      Background="#e0e0e0" ShowsPreview="True" ResizeBehavior="PreviousAndNext"
+                      BorderBrush="#ccc" BorderThickness="1,0,1,0"/>
 
-        <Border x:Name="printFrame" BorderThickness="0">
-        <Grid x:Name="contentGrid" ClipToBounds="True">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Border x:Name="borderPreview" Grid.Row="0" Padding="8,4" Background="#f0f0f0" Height="28">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" x:Name="lblPreview" Text="Anteprima" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-              <Button x:Name="btnRefreshPreviewHeader" Grid.Column="2" Click="BtnRefreshPreview_Click"
-                      ToolTip="Aggiorna anteprima" Padding="4,0" Height="20" VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="11" Margin="0,0,3,0"/>
-                  <TextBlock Text="Aggiorna" FontSize="11"/>
-                </StackPanel>
-              </Button>
-            </Grid>
-          </Border>
-          <wv2:WebView2 Grid.Row="1" x:Name="webView" AllowDrop="False" AllowExternalDrop="False"
+				<Border x:Name="printFrame" BorderThickness="0">
+					<Grid x:Name="contentGrid" ClipToBounds="True">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Border x:Name="borderPreview" Grid.Row="0" Padding="8,6" Background="#f0f0f0" Height="32" BorderBrush="#ccc" BorderThickness="0,1,0,1">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0" x:Name="lblPreview" Text="Anteprima" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+<Button x:Name="btnRefreshPreviewHeader" Grid.Column="2" Click="BtnRefreshPreview_Click"
+                        ToolTip="Aggiorna anteprima" Padding="10,1"
+                        BorderBrush="#FF9E1B1B" BorderThickness="1" MinWidth="72" Margin="0,-2,0,-2">
+							<Button.Style>
+								<Style TargetType="{x:Type Button}">
+									<Setter Property="Template">
+										<Setter.Value>
+<ControlTemplate TargetType="{x:Type Button}">
+										<Border Background="{TemplateBinding Background}"
+												BorderBrush="{TemplateBinding BorderBrush}"
+												BorderThickness="{TemplateBinding BorderThickness}">
+											<ContentPresenter HorizontalAlignment="Center"
+														  VerticalAlignment="Center"
+														  Content="{TemplateBinding Content}"/>
+										</Border>
+									</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+									<Setter Property="Background">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+												<GradientStop Color="#FFFFF0" Offset="0"/>
+												<GradientStop Color="#FFFACD" Offset="0.5"/>
+												<GradientStop Color="#FFED9E" Offset="1"/>
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+									<Style.Triggers>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Setter Property="Background" Value="Yellow"/>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</Button.Style>
+							<TextBlock Text="Aggiorna" FontSize="10" Foreground="#FFED0B0B" FontWeight="Bold" Margin="0,-1,0,0"/>
+						</Button>
+							</Grid>
+						</Border>
+						<wv2:WebView2 Grid.Row="1" x:Name="webView" AllowDrop="False" AllowExternalDrop="False"
                         CoreWebView2InitializationCompleted="WebView_CoreWebView2InitializationCompleted"
                         NavigationCompleted="WebView_NavigationCompleted"/>
-          <ScrollViewer Grid.Row="1" x:Name="emptyState" VerticalScrollBarVisibility="Auto"
+						<ScrollViewer Grid.Row="1" x:Name="emptyState" VerticalScrollBarVisibility="Auto"
                         HorizontalScrollBarVisibility="Disabled" Background="White">
-             <TextBlock x:Name="emptyText"
+							<TextBlock x:Name="emptyText"
                         Text="Apri un file Markdown per iniziare, oppure scrivi direttamente nell'Editor a sinistra.&#x0a;&#x0a;Puoi anche trascinare un file .md o .txt sull'area dell'Indice a sinistra per aprirlo."
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                         FontSize="18" Foreground="#888" Margin="0,100,0,0"
                         TextWrapping="Wrap" TextAlignment="Center"/>
-          </ScrollViewer>
-        </Grid>
-      </Border>
-      </Grid>
-    </Grid>
+						</ScrollViewer>
+					</Grid>
+				</Border>
+			</Grid>
+		</Grid>
 
-    <Border x:Name="borderStatus" Grid.Row="3" BorderBrush="#ccc" BorderThickness="0,1,0,0">
-      <StatusBar x:Name="statusBar">
-        <StatusBarItem x:Name="statusFileItem">
-          <TextBlock x:Name="statusFile" Text="Pronto"/>
-        </StatusBarItem>
-        <Separator/>
-        <StatusBarItem x:Name="statusModifiedItem">
-          <TextBlock x:Name="statusModified" Text=""/>
-        </StatusBarItem>
-        <Separator/>
-        <StatusBarItem HorizontalAlignment="Right">
-          <TextBlock x:Name="statusCursor" Text="Ln 1  Col 1"/>
-        </StatusBarItem>
-      </StatusBar>
-    </Border>
-    
-  </Grid>
+		<Border x:Name="borderStatus" Grid.Row="3" BorderBrush="#ccc" BorderThickness="0,1,0,0">
+			<StatusBar x:Name="statusBar">
+				<StatusBarItem x:Name="statusFileItem">
+					<TextBlock x:Name="statusFile" Text="Pronto"/>
+				</StatusBarItem>
+				<Separator/>
+				<StatusBarItem x:Name="statusModifiedItem">
+					<TextBlock x:Name="statusModified" Text=""/>
+				</StatusBarItem>
+				<Separator/>
+				<StatusBarItem HorizontalAlignment="Right">
+					<TextBlock x:Name="statusCursor" Text="Ln 1  Col 1"/>
+				</StatusBarItem>
+			</StatusBar>
+		</Border>
+
+	</Grid>
 </Window>

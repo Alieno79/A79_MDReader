@@ -55,14 +55,19 @@ All'apertura di un `.txt`, il contenuto viene convertito internamente in Markdow
 - **+** / **−**: zoom avanti/indietro (0.25x – 5x)
 - **1:1**: ripristina zoom 100%
 
+## Pulsante Aggiorna anteprima
+Nella barra "Anteprima" il pulsante di aggiornamento usa solo testo "Aggiorna" con sfondo giallo canarino. Al passaggio del mouse diventa giallo acceso.
+
 ## Indice (TOC)
 - Colonna sinistra **sempre visibile** con l'elenco delle intestazioni
 - **Click su un'intestazione**: salta a quella sezione nell'anteprima
 - **Trascina un file .md o .txt sull'Indice** per aprirlo in una nuova istanza (solo con documento già aperto)
 
+## Toolbar
+- La toolbar principale (a sinistra) e quella di formattazione (a sinistra quando l'editor è visibile) ora hanno la stessa altezza e spaziatura orizzontale tra i pulsanti
+- Sfondo toolbar in modalità scura: #2d2d2d
+
 ## Modalità scura
-- **Pulsante Scuro/Chiaro**: commuta la modalità
-- L'impostazione viene salvata e ripristinata all'avvio
 
 ## Tasti rapidi
 | Tasto | Azione |
